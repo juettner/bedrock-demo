@@ -4,29 +4,29 @@ import requests
 import json
 
 bedrock = boto3.client(
-    service_name = 'bedrock-runtime',
-    region_name = 'us-west-2',
-    config = botocore.config.Config(
+    service_name='bedrock-runtime',
+    region_name='us-west-2',
+    config=botocore.config.Config(
         read_timeout=300
     )
 )
-def lambda_handler(event, context):
 
-    prompt = 'What would it be like to ride on a unicorn?'
+
+def lambda_handler(event, context):
     body = json.dumps({
-        "inputText": prompt,
+        "inputText": event['prompt'],
         "textGenerationConfig": {
             "maxTokenCount": 128,
             "stopSequences": [],
-            "temperature": 0,
-            "topP": 0.9
+            "temperature": int(event['temperature']),
+            "topP": float(event['topP'])
         }
     })
 
     try:
         response = bedrock.invoke_model(
             body=body,
-            modelId='amazon.titan-text-lite-v1',
+            modelId=event['model'],
             accept='application/json',
             contentType='application/json'
         )
