@@ -11,22 +11,27 @@ bedrock = boto3.client(
     )
 )
 
-
 def lambda_handler(event, context):
+
+    prompt = event['prompt']
+    temperature = int(event['temperature'])
+    topP = float(event['topP'])
+    model = event['model']
+
     body = json.dumps({
-        "inputText": event['prompt'],
+        "inputText": prompt,
         "textGenerationConfig": {
             "maxTokenCount": 128,
             "stopSequences": [],
-            "temperature": int(event['temperature']),
-            "topP": float(event['topP'])
+            "temperature": temperature,
+            "topP": topP
         }
     })
 
     try:
         response = bedrock.invoke_model(
             body=body,
-            modelId=event['model'],
+            modelId=model,
             accept='application/json',
             contentType='application/json'
         )

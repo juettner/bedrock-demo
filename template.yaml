@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  sdg-bedrock-demo
+  Quick and dirty demo that calls AWS Bedrock via a Lambda function
 Globals:
   Function:
     Timeout: 3
@@ -21,7 +21,7 @@ Resources:
           Type: Api
           Properties:
             Path: /bedrock-demo
-            Method: get
+            Method: post
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
